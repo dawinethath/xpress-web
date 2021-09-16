@@ -10,7 +10,7 @@ function load(component) {
     return () => import(`@/views/${component}.vue`)
 }
 
-const routes = [    
+const routes = [
     {
         path: '/',
         name: 'Home',

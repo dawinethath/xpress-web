@@ -1,69 +1,76 @@
 <template>
-	<v-app :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }" :dark="darkTheme" id="inspire">
-		<v-container>
-			<v-layout wrap>
-				<v-flex sm12 md6 offset-md3>
-					<v-card elevation="4" light tag="section">
-						<v-card-title>
-							<v-layout align-center justify-space-between>
-								<h3 class="headline">
-									{{ platformName }}
-								</h3>
-								<v-flex>
-									<v-img :alt="platformName" class="ml-3" contain height="48px" position="center right" src="https://www.mobygames.com/images/i/12/25/1435075.png"></v-img>
-								</v-flex>
-							</v-layout>
-						</v-card-title>
-						<v-divider></v-divider>
-						<v-card-text>
-							<p>Sign in with your username and password:</p>
-							<v-form>
-								<v-text-field
-									outline
-									label="Username"
-									type="text"
-									v-model="username"></v-text-field>
-								<v-text-field
-									outline
-									hide-details
-									label="Password"
-									type="password"
-									v-model="password"></v-text-field>
-							</v-form>
-						</v-card-text>
-						<v-divider></v-divider>
-						<v-card-actions :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }">
-							<v-btn color="info">
-								Forgot password?
-							</v-btn>
-							<v-spacer></v-spacer>
-							<v-btn color="info" :large="$vuetify.breakpoint.smAndUp">
-								<v-icon left>mdi-lock</v-icon>
-								Login
-							</v-btn>
-						</v-card-actions>
-					</v-card>
-				</v-flex>
-			</v-layout>
-		</v-container>
-	</v-app>
+	<v-card
+		class="mx-auto"
+		max-width="344"
+		outlined
+	>
+		<v-card-title>
+			Login
+		</v-card-title>
+
+		<v-card-subtitle>
+			login with your username and password.
+		</v-card-subtitle>
+
+		<v-card-text>
+			<v-form
+				ref="form"
+				v-model="valid"
+				lazy-validation
+			>
+				<v-text-field
+					v-model="username"
+					:rules="[rules.required]"
+					label="Username"
+					required
+					outlined
+				></v-text-field>
+				<v-text-field
+					v-model="password"
+					:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+					:rules="[rules.required, rules.min]"
+					:type="showPassword ? 'text' : 'password'"
+					label="Password"
+					hint="At least 8 characters"
+					@click:append="showPassword = !showPassword"
+					outlined
+				></v-text-field>
+			</v-form>
+		</v-card-text>
+
+		<v-card-actions>
+			<v-spacer></v-spacer>
+
+			<v-btn
+				class="ma-2"
+				outlined
+				color="teal"
+				@click="login"
+			>
+				Login
+			</v-btn>
+		</v-card-actions>
+	</v-card>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld';
-
-export default {
-	name: 'App',
-
-	components: {
-		// HelloWorld
-	},
-
-	data: () => ({
-		darkTheme: true,
-		platformName: 'XPRESS',
-		password: null,
-		username: null
-	}),
-};
+	export default {
+		data: () => ({
+			username: '',
+			password: '',
+			showPassword: false,
+			valid: true,
+			rules: {
+				required: value => !!value || 'Required.',
+				min: v => v.length >= 8 || 'Min 8 characters',
+			},
+		}),
+		methods: {
+			login () {
+				if(this.$refs.form.validate()){
+					alert("login now")
+				}
+			},
+		},
+	}
 </script>
