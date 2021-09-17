@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import Customer from "@/api/models/Customer";
+import Customer from "@/api/models/customer";
 
 export default {
 	data: () => ({

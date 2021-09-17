@@ -1,8 +1,8 @@
-import CustomerType from "./CustomerType";
+import CustomerType from "./customerType";
 
 export default class Customer {
     constructor(data = {}) {
-        this.id                 = data.id || ''        
+        this.id                 = data.id || ''
         this.number             = data.number || ''
         this.name               = data.name || ''
         this.description        = data.description || ''
