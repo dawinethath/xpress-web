@@ -26,6 +26,11 @@ const routes = [
         name: 'Login',
         component: load('Login')
     },
+    {
+        path: '/customer',
+        name: 'Customer',
+        component: load('customers/Customer')
+    },
 ]
 
 const router = new VueRouter({

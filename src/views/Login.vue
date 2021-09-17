@@ -38,13 +38,15 @@
 			</v-form>
 		</v-card-text>
 
+		<v-divider></v-divider>
+
 		<v-card-actions>
 			<v-spacer></v-spacer>
 
 			<v-btn
 				class="ma-2"
 				outlined
-				color="teal"
+				color="primary"
 				@click="login"
 			>
 				Login
