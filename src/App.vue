@@ -46,6 +46,8 @@
         <router-link to="/login">Login</router-link>
         |
         <router-link to="/customer">Customer</router-link>
+        |
+        <router-link to="/customer/type">Customer Type</router-link>
       </p>
       <router-view/>
     </v-main>

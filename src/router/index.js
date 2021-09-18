@@ -31,6 +31,11 @@ const routes = [
         name: 'Customer',
         component: load('customers/Customer')
     },
+    {
+        path: '/customer/type',
+        name: 'Customer Type',
+        component: load('customers/Type')
+    },
 ]
 
 const router = new VueRouter({
