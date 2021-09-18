@@ -1,228 +1,79 @@
 <template>
-	<v-data-table
-		:headers="headers"
-		:items="customerTypeList"
-		sort-by="name"
-		class="elevation-1"
-	>
-		<template v-slot:top>
-		<v-toolbar
-			flat
-		>
-			<v-toolbar-title>My CRUD</v-toolbar-title>
-			<v-divider
-				class="mx-4"
-				inset
-				vertical
-			></v-divider>
-			<v-spacer></v-spacer>
-			<v-dialog
-				v-model="dialog"
-				max-width="500px"
-			>
-				<template v-slot:activator="{ on, attrs }">
-					<v-btn
-						color="primary"
-						dark
-						class="mb-2"
-						v-bind="attrs"
-						v-on="on"
-					>
-						New Item
-					</v-btn>
-				</template>
-				<v-card>
-					<v-card-title>
-						<span class="text-h5">{{ formTitle }}</span>
-					</v-card-title>
+<div>
+	<kendo-datasource ref="customerTypeDS"
+		:transport-read-url="urlPath"
+		:transport-read-data-type="'json'"
+		:transport-update-url="urlPath"
+		:transport-update-data-type="'json'"
+		:transport-destroy-url="urlPath"
+		:transport-destroy-data-type="'json'"
+		:transport-create-url="urlPath"
+		:transport-create-data-type="'json'"
+		:transport-parameter-map="parameterMap"
+		:schema-model-id="'id'"
+		:schema-model-fields="schemaModelFields"
+		:batch='true'
+		:page-size='20'>
+    </kendo-datasource>
 
-					<v-card-text>
-						<v-container>
-							<v-row>
-								<v-col
-									cols="12"
-									sm="6"
-									md="4"
-								>
-									<v-text-field
-										v-model="editedItem.name"
-										label="name"
-										required
-										outlined
-									></v-text-field>
-								</v-col>
-								<v-col
-									cols="12"
-									sm="6"
-									md="4"
-								>
-									<v-text-field
-										v-model="editedItem.description"
-										label="Description"
-										outlined
-									></v-text-field>
-								</v-col>
-								<v-col
-									cols="12"
-									sm="6"
-									md="4"
-								>
-									<v-text-field
-										v-model="editedItem.status"
-										label="Status"
-										outlined
-									></v-text-field>
-								</v-col>
-							</v-row>
-						</v-container>
-					</v-card-text>
-
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn
-							color="blue darken-1"
-							text
-							@click="close"
-						>
-							Cancel
-						</v-btn>
-						<v-btn
-							color="blue darken-1"
-							text
-							@click="save"
-						>
-							Save
-						</v-btn>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
-			<v-dialog v-model="dialogDelete" max-width="500px">
-				<v-card>
-					<v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-						<v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-						<v-spacer></v-spacer>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
-		</v-toolbar>
-		</template>
-		<template v-slot:item.actions="{ item }">
-			<v-icon
-				small
-				class="mr-2"
-				@click="editItem(item)"
-			>
-				mdi-pencil
-			</v-icon>
-			<v-icon
-				small
-				@click="deleteItem(item)"
-			>
-				mdi-delete
-			</v-icon>
-		</template>
-		<template v-slot:no-data>
-			<v-btn
-				color="primary"
-				@click="initialize"
-			>
-				Reset
-			</v-btn>
-		</template>
-	</v-data-table>
+    <kendo-grid :height="600"
+		:data-source-ref="'customerTypeDS'"
+		:pageable='true'
+		:editable="'inline'"
+		:toolbar="['create']">
+        <kendo-grid-column 
+			:field="'name'" 
+			:title="'Name'">
+		</kendo-grid-column>
+        <kendo-grid-column 
+			:field="'description'"
+			:title="'Description'"
+			:width="120">
+		</kendo-grid-column>
+        <kendo-grid-column 
+			:field="'status'"
+			:title="'Status'"
+			:width="120">
+		</kendo-grid-column>
+        <kendo-grid-column 
+			:command="['edit', 'destroy']"
+			:title="'&nbsp;'"
+			:width="170">
+		</kendo-grid-column>
+    </kendo-grid>
+</div>
 </template>
 <script>
-import CustomerTypeModel from "@/api/models/customerType";
+import kendo from '@progress/kendo-ui';
+import '@progress/kendo-theme-default/dist/all.css';
+import { Grid, GridColumn } from '@progress/kendo-grid-vue-wrapper';
+import { KendoDataSource } from '@progress/kendo-datasource-vue-wrapper';
+
+const urlPath = 'https://kh5zwuvxp6.execute-api.ap-southeast-1.amazonaws.com/dev/branch/bran-5738784641/customers'
 
 export default {
-    data: () => ({
-		dialog: false,
-		dialogDelete: false,
-		headers: [
-			{
-				text: 'Name',
-				align: 'start',
-				sortable: false,
-				value: 'name',
-			},
-			{ text: 'Description', value: 'description' },
-			{ text: 'Status', value: 'status' },
-			{ text: 'Actions', value: 'actions', sortable: false },
-		],
-		customerTypeList: [],
-		editedIndex: -1,
-		editedItem: new CustomerTypeModel(),
-		defaultItem: new CustomerTypeModel(),
-    }),
-
-    computed: {
-		formTitle () {
-			return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-		},
+    components: {
+        'kendo-grid': Grid,
+        'kendo-grid-column': GridColumn,
+        'kendo-datasource': KendoDataSource
     },
-
-    watch: {
-		dialog (val) {
-			val || this.close()
-		},
-		dialogDelete (val) {
-			val || this.closeDelete()
-		},
+   data: function () {
+        return {
+			urlPath : urlPath,
+            schemaModelFields: {
+                id: { type: 'number', editable: false },
+                name: { validation: { required: true } },
+                description: { type: 'string' },
+                status: { type: 'number' }
+            }
+        };
     },
-
-    created () {
-		this.initialize()
-    },
-
     methods: {
-		initialize () {
-			this.customerTypeList = [new CustomerTypeModel()]
-		},
-
-		editItem (item) {
-			this.editedIndex = this.customerTypeList.indexOf(item)
-			this.editedItem = Object.assign({}, item)
-			this.dialog = true
-		},
-
-		deleteItem (item) {
-			this.editedIndex = this.customerTypeList.indexOf(item)
-			this.editedItem = Object.assign({}, item)
-			this.dialogDelete = true
-		},
-
-		deleteItemConfirm () {
-			this.customerTypeList.splice(this.editedIndex, 1)
-			this.closeDelete()
-		},
-
-		close () {
-			this.dialog = false
-			this.$nextTick(() => {
-				this.editedItem = Object.assign({}, this.defaultItem)
-				this.editedIndex = -1
-			})
-		},
-
-		closeDelete () {
-			this.dialogDelete = false
-			this.$nextTick(() => {
-				this.editedItem = Object.assign({}, this.defaultItem)
-				this.editedIndex = -1
-			})
-		},
-
-		save () {
-			if (this.editedIndex > -1) {
-				Object.assign(this.customerTypeList[this.editedIndex], this.editedItem)
-			} else {
-				this.customerTypeList.push(this.editedItem)
-			}
-			this.close()
-		},
-    },
+        parameterMap: function(options, operation) {
+            if (operation !== 'read' && options.models) {
+                return { models: kendo.stringify(options.models) };
+            }
+        }
+    }
 }
 </script>
