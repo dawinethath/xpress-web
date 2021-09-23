@@ -1,12 +1,8 @@
-export default class Customer {
+export default class Branch {
     constructor(data = {}) {
-        this.id                 = data.id || ''
-        this.number             = data.number || ''
+        this.id                 = data.id || '' 
         this.name               = data.name || ''
         this.description        = data.description || ''
-        this.type               = data.type || null
-        this.address            = data.address || ''
-        this.phone              = data.phone || ''
         this.status             = data.status || 0
         this.is_deleted         = data.is_deleted || 0
 
