@@ -1,7 +1,7 @@
 <template>
 	<v-card
 		class="mx-auto"
-		max-width="344"
+		max-width="600"
 		outlined
 	>
 		<v-toolbar
@@ -15,7 +15,7 @@
 			</v-btn>
 
 			<v-card-title class="text-h6 font-weight-regular">
-				CUSTOMER
+				BRANCHES	
 			</v-card-title>
 
 			<v-spacer></v-spacer>
@@ -24,8 +24,9 @@
 				<v-icon>mdi-close</v-icon>
 			</v-btn>
 		</v-toolbar>
+
 		<div>
-			<kendo-datasource ref="customerTypeDS"
+			<kendo-datasource ref="branchDS"
 				:transport-read-url="urlPath"
 				:transport-read-data-type="'json'"
 				:transport-update-url="urlPath"
@@ -43,7 +44,7 @@
 			</kendo-datasource>
 
 			<kendo-grid :height="600"
-				:data-source-ref="'customerTypeDS'"
+				:data-source-ref="'branchDS'"
 				:pageable='true'
 				:editable="'inline'"
 				:toolbar="['create']">
@@ -87,7 +88,7 @@ export default {
     },
    data: function () {
         return {
-			urlPath : api.xpressUrl + '/customers/types',
+			urlPath : api.xpressUrl + '/branches',
             schemaModelFields: {
                 id: { type: 'number', editable: false },
                 name: { validation: { required: true } },
