@@ -28,12 +28,13 @@
 		<div>
 			<kendo-datasource ref="branchDS"
 				:transport-read-url="urlPath"
+				:transport-read-type="'GET'"
 				:transport-read-data-type="'json'"
 				:transport-update-url="urlPath"
+				:transport-update-type="'POST'"
 				:transport-update-data-type="'json'"
-				:transport-destroy-url="urlPath"
-				:transport-destroy-data-type="'json'"
 				:transport-create-url="urlPath"
+				:transport-create-type="'POST'"
 				:transport-create-data-type="'json'"
 				:transport-parameter-map="parameterMap"
 				:schema-model-id="'id'"
@@ -47,7 +48,7 @@
 				:data-source-ref="'branchDS'"
 				:pageable='true'
 				:editable="'inline'"
-				:toolbar="['create']">
+				:toolbar="['create','save','cancel']">
 				<kendo-grid-column 
 					:field="'name'" 
 					:title="'Name'">
